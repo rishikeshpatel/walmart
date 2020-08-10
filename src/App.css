@@ -1,38 +1,85 @@
-.App {
-  text-align: center;
+.MuiCard-root {
+  overflow: hidden;
+  width: 100%;
+  margin-right: 33px;
+  margin-top: 10px;
+  height: 530px;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.MuiCard-root:hover {
+  cursor: pointer;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.product-list-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 40px;
+}
+.product-list {
+  list-style-type: none;
+}
+.image-container {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 200px;
+  margin: auto;
+  height: 200px;
 }
 
-.App-link {
-  color: #61dafb;
+.column {
+  float: left;
+  padding: 0 10px;
+  width: 47%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.row {
+  margin: 0 -5px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+.product-details-container {
+  display: flex;
+  justify-content: center;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.product-main-container {
+  margin-top: 20px;
+}
+.product-details {
+  margin-left: 81px;
+}
+.loading-card {
+  width: 355px;
+}
+.product-pagination {
+  margin-left: 35%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.product-pagination-container {
+  display: flex;
+}
+.page-size-selector {
+  width: 70px;
+  margin-top: 13px !important;
+  margin-left: 10px !important;
 }
