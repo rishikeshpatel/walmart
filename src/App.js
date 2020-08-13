@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import "./App.css";
 import Product from "./Components/Product";
 import Productloading from "./Components/Productloading";
+import EditProductDetails from "./Components/EditProductDetails";
 import { getProducts, setSelectedProductIndex } from "./Actions/action";
 import { connect } from "react-redux";
-import ProductDetails from "./Components/ProductDetails";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -32,7 +31,7 @@ class App extends Component {
     this.state = {
       pageNo: props.value.pageNo,
       pageSize: props.value.pageSize,
-      showProductDetailsPage: false,
+      showEditModalBox: false,
       searchString: "",
       inStockFilter: false,
       ratingValue: 0,
@@ -41,34 +40,30 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    const { getProducts } = this.props;
-    getProducts(1, 8);
+    const { getProducts, value } = this.props;
+    value.products.length === 0 && getProducts(1, 8);
     this.setState({
       pageNo: this.props.value.pageNo,
       pageSize: this.props.value.pageSize,
     });
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.value.loading !== prevProps.value.loading) {
-      this.onReturntoProductList();
-    }
-  }
+
   // To see the product details page
   onProductClick = (index) => {
     const { setSelectedProduct } = this.props;
     setSelectedProduct(index);
+  };
+  onEditBtnClick = (index) => {
+    console.log("Index value : ", index);
     this.setState({
-      showProductDetailsPage: true,
+      showEditModalBox: true,
     });
   };
-
-  // when returning from product details page
-  onReturntoProductList = () => {
+  onModalClose = () => {
     this.setState({
-      showProductDetailsPage: false,
+      showEditModalBox: false,
     });
   };
-
   // on change of page number
   handlePaginationChange = (event, value) => {
     const { getProducts } = this.props;
@@ -186,10 +181,10 @@ class App extends Component {
       filteredProperties =
         filteredProperties + `minReviewRating=${ratingValue}`;
     }
-    console.log("Min :",minPrice)
-    console.log("Max : ",maxPrice)
+    console.log("Min :", minPrice);
+    console.log("Max : ", maxPrice);
 
-    if (minPrice && maxPrice && (parseInt(minPrice) < parseInt(maxPrice))) {
+    if (minPrice && maxPrice && parseInt(minPrice) < parseInt(maxPrice)) {
       if (filteredProperties) {
         filteredProperties =
           filteredProperties + `&minPrice=${minPrice}&maxPrice=${maxPrice}`;
@@ -217,7 +212,7 @@ class App extends Component {
   render() {
     const { value } = this.props;
     const {
-      showProductDetailsPage,
+      showEditModalBox,
       pageNo,
       pageSize,
       searchString,
@@ -227,205 +222,190 @@ class App extends Component {
       maxPrice,
     } = this.state;
     return (
-      <Router>
-        <div className="App">
-          <AppBar position="fixed" className="app-bar">
-            <Toolbar variant="dense">
-              <IconButton edge="start" color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit">
-                Product
-              </Typography>
-              <div className="search-bar">
-                <InputBase
-                  className="search-input-box"
-                  placeholder="Search Products..."
-                  inputProps={{ "aria-label": "search" }}
-                  value={searchString}
-                  onChange={this.handleSearchStringChange}
-                  onKeyPress={this.enterPressed}
-                />
-                <div
-                  style={{
-                    backgroundColor: "#ffc220",
-                    borderTopRightRadius: "17px",
-                    borderBottomRightRadius: "17px",
-                  }}
-                >
-                  <SearchIcon className="search-icon" onClick={this.onSearch} />
-                </div>
-              </div>
-            </Toolbar>
-          </AppBar>
-          <div className="product-list-container">
-            {!showProductDetailsPage && (
-              <Drawer
-                className="filter-drawer"
-                variant="permanent"
-                anchor="left"
-              >
-                <Divider />
-                <Typography
-                  className="filter-text"
-                  variant="h6"
-                  color="inherit"
-                >
-                  Filter
-                </Typography>
-                <br />
-                <Divider />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={inStockFilter}
-                      onChange={this.handleInStockFilterChange}
-                      name="checkedB"
-                      color="primary"
-                    />
-                  }
-                  label="In Stock"
-                />
-                <Divider />
-                <br />
-
-                <Typography variant="h6" color="inherit">
-                  Minimum Ratings
-                </Typography>
-                <FormControl className="rating-value-selector">
-                  <Select
-                    labelId="rating-select-box"
-                    id="demo-simple-select"
-                    value={ratingValue}
-                    onChange={this.handleRatingFilterChange}
-                  >
-                    <MenuItem value={1}>
-                      <Rating name="read-only" value={1} readOnly />
-                    </MenuItem>
-                    <MenuItem value={2}>
-                      <Rating name="read-only" value={2} readOnly />
-                    </MenuItem>
-                    <MenuItem value={3}>
-                      <Rating name="read-only" value={3} readOnly />
-                    </MenuItem>
-                    <MenuItem value={4}>
-                      <Rating name="read-only" value={4} readOnly />
-                    </MenuItem>
-                    <MenuItem value={5}>
-                      <Rating name="read-only" value={5} readOnly />
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <Divider />
-                <br />
-
-                <Typography variant="h6" color="inherit">
-                  Price Range
-                </Typography>
-                <br />
-                <div className="price-range-selector">
-                  <TextField
-                    id="min-price"
-                    label="Min Price"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={minPrice}
-                    onChange={this.onMinPriceChange}
-                  />
-                  <TextField
-                    id="max-price"
-                    label="Max Price"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={maxPrice}
-                    onChange={this.onMaxPriceChange}
-                  />
-                </div>
-                <Divider />
-                <div className="filter-buttons">
-                  <Button
-                    className="apply-filter-btn"
-                    variant="contained"
-                    color="primary"
-                    onClick={this.onFilterBtnClick}
-                  >
-                    Apply
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={this.clearFilters}
-                  >
-                    Clear
-                  </Button>
-                </div>
-              </Drawer>
-            )}
-
-            <div class="row">
-              <ul className="product-list">
-                {!showProductDetailsPage &&
-                  value.products.map((product, index) => {
-                    return (
-                      <div class="column">
-                        <li key={index}>
-                          <Link
-                            to="/Product-Details"
-                            style={{ textDecoration: "none" }}
-                          >
-                            <Product
-                              data={product}
-                              loading={value.loading}
-                              onProductClick={this.onProductClick}
-                              index={index}
-                            />
-                          </Link>
-                        </li>
-                      </div>
-                    );
-                  })}
-              </ul>
-
-              {value.loading && <Productloading />}
-              {!value.loading && value.products.length === 0 && (
-                <div className="no-products-found">
-                  <h1> No products found</h1>
-                </div>
-              )}
-              <Route exact path="/Product-Details" component={ProductDetails} />
-            </div>
-          </div>
-          {!value.loading && !showProductDetailsPage && (
-            <div className="product-pagination-container">
-              <Pagination
-                className="product-pagination"
-                count={pageSize}
-                page={pageNo}
-                color="primary"
-                variant="outlined"
-                shape="rounded"
-                onChange={this.handlePaginationChange}
+      <div className="App">
+        <AppBar position="fixed" className="app-bar">
+          <Toolbar variant="dense">
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit">
+              Product List
+            </Typography>
+            <div className="search-bar">
+              <InputBase
+                className="search-input-box"
+                placeholder="Search Products..."
+                inputProps={{ "aria-label": "search" }}
+                value={searchString}
+                onChange={this.handleSearchStringChange}
+                onKeyPress={this.enterPressed}
               />
-              <FormControl className="page-size-selector">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={pageSize}
-                  onChange={this.handlePageSizeChange}
-                >
-                  <MenuItem value={8}>8</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={20}>20</MenuItem>
-                </Select>
-              </FormControl>
+              <div
+                style={{
+                  backgroundColor: "#ffc220",
+                  borderTopRightRadius: "17px",
+                  borderBottomRightRadius: "17px",
+                }}
+              >
+                <SearchIcon className="search-icon" onClick={this.onSearch} />
+              </div>
             </div>
-          )}
+          </Toolbar>
+        </AppBar>
+        <div className="product-list-container">
+          <Drawer className="filter-drawer" variant="permanent" anchor="left">
+            <Divider />
+            <Typography className="filter-text" variant="h6" color="inherit">
+              Filter
+            </Typography>
+            <br />
+            <Divider />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={inStockFilter}
+                  onChange={this.handleInStockFilterChange}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="In Stock"
+            />
+            <Divider />
+            <br />
+
+            <Typography variant="h6" color="inherit">
+              Minimum Ratings
+            </Typography>
+            <FormControl className="rating-value-selector">
+              <Select
+                labelId="rating-select-box"
+                id="demo-simple-select"
+                value={ratingValue}
+                onChange={this.handleRatingFilterChange}
+              >
+                <MenuItem value={1}>
+                  <Rating name="read-only" value={1} readOnly />
+                </MenuItem>
+                <MenuItem value={2}>
+                  <Rating name="read-only" value={2} readOnly />
+                </MenuItem>
+                <MenuItem value={3}>
+                  <Rating name="read-only" value={3} readOnly />
+                </MenuItem>
+                <MenuItem value={4}>
+                  <Rating name="read-only" value={4} readOnly />
+                </MenuItem>
+                <MenuItem value={5}>
+                  <Rating name="read-only" value={5} readOnly />
+                </MenuItem>
+              </Select>
+            </FormControl>
+            <Divider />
+            <br />
+
+            <Typography variant="h6" color="inherit">
+              Price Range
+            </Typography>
+            <br />
+            <div className="price-range-selector">
+              <TextField
+                id="min-price"
+                label="Min Price"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={minPrice}
+                onChange={this.onMinPriceChange}
+              />
+              <TextField
+                id="max-price"
+                label="Max Price"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={maxPrice}
+                onChange={this.onMaxPriceChange}
+              />
+            </div>
+            <Divider />
+            <div className="filter-buttons">
+              <Button
+                className="apply-filter-btn"
+                variant="contained"
+                color="primary"
+                onClick={this.onFilterBtnClick}
+              >
+                Apply
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.clearFilters}
+              >
+                Clear
+              </Button>
+            </div>
+          </Drawer>
+
+          <div class="row">
+            <ul className="product-list">
+              {value.products.map((product, index) => {
+                return (
+                  <div class="column">
+                    <li key={index}>
+                      <Product
+                        data={product}
+                        loading={value.loading}
+                        onProductClick={this.onProductClick}
+                        index={index}
+                        onEditBtnClick={this.onEditBtnClick}
+                      />
+                    </li>
+                  </div>
+                );
+              })}
+            </ul>
+            {showEditModalBox && (
+              <EditProductDetails onClose={this.onModalClose} />
+            )}
+            {value.loading && <Productloading />}
+            {!value.loading && value.products.length === 0 && (
+              <div className="no-products-found">
+                <h1> No products found</h1>
+              </div>
+            )}
+            {/* <Route exact path="/Product-Details" component={ProductDetails} /> */}
+          </div>
         </div>
-      </Router>
+        {!value.loading && (
+          <div className="product-pagination-container">
+            <Pagination
+              className="product-pagination"
+              count={pageSize}
+              page={pageNo}
+              color="primary"
+              variant="outlined"
+              shape="rounded"
+              onChange={this.handlePaginationChange}
+            />
+            <FormControl className="page-size-selector">
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={pageSize}
+                onChange={this.handlePageSizeChange}
+              >
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        )}
+      </div>
     );
   }
 }

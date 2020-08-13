@@ -9,7 +9,7 @@
   height: 530px;
 }
 .MuiCard-root:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .product-list-container {
   display: flex;
@@ -67,6 +67,7 @@
   justify-content: center;
   margin-left: 10%;
   margin-right: 10%;
+  margin-top: 60px;
 }
 .product-main-container {
   margin-top: 20px;
@@ -149,8 +150,19 @@
   margin-right: 10px !important;
 }
 .rating-value-selector {
-  width:100%;
+  width: 100%;
 }
 .price-range-selector {
   display: flex;
+}
+.product-edit-modal-conatiner {
+  width: 100% !important;
+  height: 100% !important;
+}
+/* .product-edit-modal {
+  width: 75% !important;
+  height: 75% !important;
+} */
+.inStock {
+  display: flow-root !important;
 }

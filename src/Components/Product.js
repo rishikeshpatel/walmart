@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Rating } from "@material-ui/lab";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,10 @@ class Product extends Component {
     const { index } = this.props;
     this.props.onProductClick(index);
   };
+  onShowModalBox = () => {
+    const { index } = this.props;
+    this.props.onEditBtnClick(index);
+  };
   render() {
     const { data } = this.props;
     return (
@@ -51,7 +56,7 @@ class Product extends Component {
           }
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <MoreVertIcon onClick={this.onShowModalBox} />
             </IconButton>
           }
           title={this.props.data.productName}
@@ -62,22 +67,24 @@ class Product extends Component {
             </div>
           }
         />
-        <img
-          className="image-container"
-          src={
-            "https://mobile-tha-server-8ba57.firebaseapp.com/" +
-            data.productImage
-          }
-          alt=""
-        ></img>
-        <h1>{data.price}</h1>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            <h4
-              dangerouslySetInnerHTML={{ __html: data.shortDescription }}
-            ></h4>
-          </Typography>
-        </CardContent>
+        <Link to="/Product-Details" style={{ textDecoration: "none" }}>
+          <img
+            className="image-container"
+            src={
+              "https://mobile-tha-server-8ba57.firebaseapp.com/" +
+              data.productImage
+            }
+            alt=""
+          ></img>
+          &nbsp;&nbsp;&nbsp;&nbsp;<b>{data.price}</b>
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              <h4
+                dangerouslySetInnerHTML={{ __html: data.shortDescription }}
+              ></h4>
+            </Typography>
+          </CardContent>
+        </Link>
       </Card>
     );
   }
