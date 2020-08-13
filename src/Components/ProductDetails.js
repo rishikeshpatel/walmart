@@ -3,12 +3,12 @@ import Button from "@material-ui/core/Button";
 import { Rating } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProducts } from "./action";
+import { getProducts } from "../Actions/action";
 
 class ProductDetails extends Component {
   onBackBtnClick = () => {
     const { value, getProducts } = this.props;
-    getProducts(1, 8);
+    getProducts(value.pageNo, value.pageSize, value.searchString);
   };
   render() {
     const { value } = this.props;
@@ -58,7 +58,8 @@ const mapStateToProps = (state) => ({
   value: state,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getProducts: (pageNo, PageSize) => dispatch(getProducts(pageNo, PageSize)),
+  getProducts: (pageNo, PageSize, searchString) =>
+    dispatch(getProducts(pageNo, PageSize, searchString)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);
 // export default ProductDetails;

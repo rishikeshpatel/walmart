@@ -1,3 +1,6 @@
+.app-bar {
+  background-color: #041e42 !important;
+}
 .MuiCard-root {
   overflow: hidden;
   width: 100%;
@@ -10,8 +13,8 @@
 }
 .product-list-container {
   display: flex;
-  margin-left: 10%;
-  margin-right: 10%;
+  /* margin-left: 10%; */
+  /* margin-right: 10%; */
   margin-top: 40px;
 }
 .product-list {
@@ -55,6 +58,10 @@
   text-align: center;
   background-color: #f1f1f1;
 }
+.MuiDrawer-paperAnchorDockedLeft {
+  width: 18%;
+  display: contents;
+}
 .product-details-container {
   display: flex;
   justify-content: center;
@@ -68,10 +75,11 @@
   margin-left: 81px;
 }
 .loading-card {
-  width: 355px;
+  width: 500px;
+  margin-left: 25px;
 }
 .product-pagination {
-  margin-left: 35%;
+  margin-left: 40%;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -82,4 +90,67 @@
   width: 70px;
   margin-top: 13px !important;
   margin-left: 10px !important;
+}
+.MuiDrawer-paper {
+  display: contents !important;
+}
+.filter-drawer {
+  width: 20%;
+  margin-left: 10px;
+}
+.search-bar {
+  position: "relative";
+  background-color: white;
+  margin-left: 30%;
+  width: 30%;
+  display: flex;
+  border-radius: 20px;
+}
+.search-input-box {
+  width: 99%;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+.search-icon {
+  color: black !important;
+  margin-top: 4px;
+  margin-left: 6px;
+  margin-right: 5px;
+}
+.search-icon:hover {
+  cursor: pointer;
+}
+.search-bar:hover {
+  background-color: whitesmoke;
+}
+@media (max-width: 1080px) {
+  .column {
+    float: left;
+    padding: 0 10px;
+    width: 95%;
+  }
+}
+.no-products-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  margin-left: 100%;
+}
+.filter-text {
+  margin-top: 20px !important;
+}
+.filter-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.apply-filter-btn {
+  margin-right: 10px !important;
+}
+.rating-value-selector {
+  width:100%;
+}
+.price-range-selector {
+  display: flex;
 }

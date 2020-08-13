@@ -5,6 +5,7 @@ const initialState = {
   index: 0,
   pageSize: 8,
   pageNo: 1,
+  searchString: ""
 };
 
 function productReducer(state = initialState, action) {
@@ -17,6 +18,7 @@ function productReducer(state = initialState, action) {
         index: 0,
         pageNo: action.payload.pageNo,
         pageSize: action.payload.pageSize,
+        searchString: action.payload.searchString
       };
     case "GETPRODUCTSUCCESS":
       return {

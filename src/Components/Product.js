@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Rating } from "@material-ui/lab";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -69,6 +70,7 @@ class Product extends Component {
           }
           alt=""
         ></img>
+        <h1>{data.price}</h1>
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             <h4

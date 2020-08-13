@@ -6,12 +6,17 @@ import {
 } from "./actionType";
 import axios from "axios";
 
-export const getProducts = (pageNo, pageSize) => {
+export const getProducts = (pageNo, pageSize, searchString) => {
+  let reqURL = `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNo}/${pageSize}?`;
+  if(searchString){
+    reqURL = reqURL+`${searchString}`;
+  }
+  console.log("URL ",reqURL);
   return (dispatch) => {
-    dispatch(getProductStarted(pageNo, pageSize));
+    dispatch(getProductStarted(pageNo, pageSize, searchString));
     axios
       .get(
-        `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNo}/${pageSize}`,
+        reqURL,
         {
           title: "GetProducts",
         }
@@ -24,14 +29,15 @@ export const getProducts = (pageNo, pageSize) => {
       });
   };
 };
+
 const getProductSuccess = (product) => ({
   type: GETPRODUCTSUCCESS,
   payload: product,
 });
 
-const getProductStarted = (pageNo, pageSize) => ({
+const getProductStarted = (pageNo, pageSize, searchString) => ({
   type: GETPRODUCTS,
-  payload:{pageNo, pageSize}
+  payload:{pageNo, pageSize, searchString}
 });
 
 const getProductFailure = (error) => ({
