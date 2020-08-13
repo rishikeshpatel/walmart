@@ -54,7 +54,6 @@ class App extends Component {
     setSelectedProduct(index);
   };
   onEditBtnClick = (index) => {
-    console.log("Index value : ", index);
     this.setState({
       showEditModalBox: true,
     });
@@ -71,7 +70,6 @@ class App extends Component {
     this.setState({
       pageNo: value,
     });
-    console.log("Page size change : ", this.props.value.searchString);
     getProducts(value, pageSize, this.props.value.searchString);
   };
   // on change of page size
@@ -181,8 +179,6 @@ class App extends Component {
       filteredProperties =
         filteredProperties + `minReviewRating=${ratingValue}`;
     }
-    console.log("Min :", minPrice);
-    console.log("Max : ", maxPrice);
 
     if (minPrice && maxPrice && parseInt(minPrice) < parseInt(maxPrice)) {
       if (filteredProperties) {
