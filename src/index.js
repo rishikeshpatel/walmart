@@ -4,9 +4,9 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import store from "./Store/store";
+import store from "./store/store";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ProductDetails from "./Components/ProductDetails";
+import ProductDetails from "./components/ProductDetails";
 
 ReactDOM.render(
   <React.StrictMode>

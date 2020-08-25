@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
-import Product from "./Components/Product";
-import Productloading from "./Components/Productloading";
-import EditProductDetails from "./Components/EditProductDetails";
-import { getProducts, setSelectedProductIndex } from "./Actions/action";
+import Product from "./components/Product";
+import Productloading from "./components/Productloading";
+import EditProductDetails from "./components/EditProductDetails";
+import { getProducts, setSelectedProductIndex } from "./actions/action";
 import { connect } from "react-redux";
 import {
   AppBar,

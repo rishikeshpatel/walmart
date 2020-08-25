@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import { Rating } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProducts } from "../Actions/action";
+import { getProducts } from "../actions/action";
 import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 class ProductDetails extends Component {
