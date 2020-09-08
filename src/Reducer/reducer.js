@@ -5,7 +5,7 @@ const initialState = {
   index: 0,
   pageSize: 8,
   pageNo: 1,
-  searchString: ""
+  searchString: "",
 };
 
 function productReducer(state = initialState, action) {
@@ -18,7 +18,7 @@ function productReducer(state = initialState, action) {
         index: 0,
         pageNo: action.payload.pageNo,
         pageSize: action.payload.pageSize,
-        searchString: action.payload.searchString
+        searchString: action.payload.searchString,
       };
     case "GETPRODUCTSUCCESS":
       return {
@@ -31,6 +31,15 @@ function productReducer(state = initialState, action) {
       return { ...state, products: [], loading: false, error: action.payload };
     case "SETINDEX":
       return { ...state, index: action.payload };
+    case "LOGINSTARTED":
+      console.log("Started");
+      return { ...state, loading: true };
+    case "LOGINSUCCESS":
+      console.log("Success", action.payload);
+      return{...state}
+    case "LOGINFAILUER":
+      console.log("Failuer", action.payload);
+      return{...state, error: action.payload}
     default:
       return state;
   }

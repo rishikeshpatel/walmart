@@ -24,7 +24,8 @@ import {
 import { Rating, Pagination } from "@material-ui/lab";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-
+import DialogBox from "./components/DialogBox";
+import LoginPage from "./components/LoginPage";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +38,7 @@ class App extends Component {
       ratingValue: 0,
       minPrice: null,
       maxPrice: null,
+      dialogOpen: false,
     };
   }
   componentDidMount() {
@@ -205,6 +207,17 @@ class App extends Component {
     getProducts(pageNo, pageSize, "");
   };
 
+  onOpenDialog = () => {
+    // console.log("Clicked",this.state.dialogOpen)
+    var modal = this.setState({
+      dialogOpen: true,
+    });
+  };
+  onCloseDialog = () => {
+    this.setState({
+      dialogOpen: false,
+    });
+  };
   render() {
     const { value } = this.props;
     const {
@@ -216,6 +229,7 @@ class App extends Component {
       ratingValue,
       minPrice,
       maxPrice,
+      dialogOpen,
     } = this.state;
     return (
       <div className="App">
@@ -248,134 +262,144 @@ class App extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <div className="product-list-container">
-          <Drawer className="filter-drawer" variant="permanent" anchor="left">
-            <Divider />
-            <Typography className="filter-text" variant="h6" color="inherit">
-              Filter
-            </Typography>
-            <br />
-            <Divider />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={inStockFilter}
-                  onChange={this.handleInStockFilterChange}
-                  name="checkedB"
-                  color="primary"
+        {!dialogOpen && (
+          <div className="product-list-container">
+            <Drawer className="filter-drawer" variant="permanent" anchor="left">
+              <Divider />
+              <Typography className="filter-text" variant="h6" color="inherit">
+                Filter
+              </Typography>
+              <br />
+              <Divider />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={inStockFilter}
+                    onChange={this.handleInStockFilterChange}
+                    name="checkedB"
+                    color="primary"
+                  />
+                }
+                label="In Stock"
+              />
+              <Divider />
+              <br />
+
+              <Typography variant="h6" color="inherit">
+                Minimum Ratings
+              </Typography>
+              <FormControl className="rating-value-selector">
+                <Select
+                  labelId="rating-select-box"
+                  id="demo-simple-select"
+                  value={ratingValue}
+                  onChange={this.handleRatingFilterChange}
+                >
+                  <MenuItem value={1}>
+                    <Rating name="read-only" value={1} readOnly />
+                  </MenuItem>
+                  <MenuItem value={2}>
+                    <Rating name="read-only" value={2} readOnly />
+                  </MenuItem>
+                  <MenuItem value={3}>
+                    <Rating name="read-only" value={3} readOnly />
+                  </MenuItem>
+                  <MenuItem value={4}>
+                    <Rating name="read-only" value={4} readOnly />
+                  </MenuItem>
+                  <MenuItem value={5}>
+                    <Rating name="read-only" value={5} readOnly />
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <Divider />
+              <br />
+
+              <Typography variant="h6" color="inherit">
+                Price Range
+              </Typography>
+              <br />
+              <div className="price-range-selector">
+                <TextField
+                  id="min-price"
+                  label="Min Price"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={minPrice}
+                  onChange={this.onMinPriceChange}
                 />
-              }
-              label="In Stock"
-            />
-            <Divider />
-            <br />
-
-            <Typography variant="h6" color="inherit">
-              Minimum Ratings
-            </Typography>
-            <FormControl className="rating-value-selector">
-              <Select
-                labelId="rating-select-box"
-                id="demo-simple-select"
-                value={ratingValue}
-                onChange={this.handleRatingFilterChange}
-              >
-                <MenuItem value={1}>
-                  <Rating name="read-only" value={1} readOnly />
-                </MenuItem>
-                <MenuItem value={2}>
-                  <Rating name="read-only" value={2} readOnly />
-                </MenuItem>
-                <MenuItem value={3}>
-                  <Rating name="read-only" value={3} readOnly />
-                </MenuItem>
-                <MenuItem value={4}>
-                  <Rating name="read-only" value={4} readOnly />
-                </MenuItem>
-                <MenuItem value={5}>
-                  <Rating name="read-only" value={5} readOnly />
-                </MenuItem>
-              </Select>
-            </FormControl>
-            <Divider />
-            <br />
-
-            <Typography variant="h6" color="inherit">
-              Price Range
-            </Typography>
-            <br />
-            <div className="price-range-selector">
-              <TextField
-                id="min-price"
-                label="Min Price"
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={minPrice}
-                onChange={this.onMinPriceChange}
-              />
-              <TextField
-                id="max-price"
-                label="Max Price"
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={maxPrice}
-                onChange={this.onMaxPriceChange}
-              />
-            </div>
-            <Divider />
-            <div className="filter-buttons">
-              <Button
-                className="apply-filter-btn"
-                variant="contained"
-                color="primary"
-                onClick={this.onFilterBtnClick}
-              >
-                Apply
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.clearFilters}
-              >
-                Clear
-              </Button>
-            </div>
-          </Drawer>
-
-          <div class="row">
-            <ul className="product-list">
-              {value.products.map((product, index) => {
-                return (
-                  <div class="column">
-                    <li key={index}>
-                      <Product
-                        data={product}
-                        loading={value.loading}
-                        onProductClick={this.onProductClick}
-                        index={index}
-                        onEditBtnClick={this.onEditBtnClick}
-                      />
-                    </li>
-                  </div>
-                );
-              })}
-            </ul>
-            {showEditModalBox && (
-              <EditProductDetails onClose={this.onModalClose} />
-            )}
-            {value.loading && <Productloading />}
-            {!value.loading && value.products.length === 0 && (
-              <div className="no-products-found">
-                <h1> No products found</h1>
+                <TextField
+                  id="max-price"
+                  label="Max Price"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={maxPrice}
+                  onChange={this.onMaxPriceChange}
+                />
               </div>
-            )}
-            {/* <Route exact path="/Product-Details" component={ProductDetails} /> */}
+              <Divider />
+              <div className="filter-buttons">
+                <Button
+                  className="apply-filter-btn"
+                  variant="contained"
+                  color="primary"
+                  onClick={this.onFilterBtnClick}
+                >
+                  Apply
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.clearFilters}
+                >
+                  Clear
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginLeft: "8px" }}
+                  onClick={this.onOpenDialog}
+                >
+                  Presentation
+                </Button>
+              </div>
+            </Drawer>
+
+            <div class="row">
+              <ul className="product-list">
+                {value.products.map((product, index) => {
+                  return (
+                    <div class="column">
+                      <li key={index}>
+                        <Product
+                          data={product}
+                          loading={value.loading}
+                          onProductClick={this.onProductClick}
+                          index={index}
+                          onEditBtnClick={this.onEditBtnClick}
+                        />
+                      </li>
+                    </div>
+                  );
+                })}
+              </ul>
+              {showEditModalBox && (
+                <EditProductDetails onClose={this.onModalClose} />
+              )}
+              {value.loading && <Productloading />}
+              {!value.loading && value.products.length === 0 && (
+                <div className="no-products-found">
+                  <h1> No products found</h1>
+                </div>
+              )}
+              {/* <Route exact path="/Product-Details" component={ProductDetails} /> */}
+            </div>
           </div>
-        </div>
+        )}
         {!value.loading && (
           <div className="product-pagination-container">
             <Pagination
@@ -401,6 +425,8 @@ class App extends Component {
             </FormControl>
           </div>
         )}
+        {/* {dialogOpen && <DialogBox open={dialogOpen} handleClose={this.onCloseDialog}/>} */}
+        {dialogOpen && <LoginPage handleClose={this.onCloseDialog} />}
       </div>
     );
   }

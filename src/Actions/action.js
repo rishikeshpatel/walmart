@@ -3,24 +3,24 @@ import {
   GETPRODUCTSUCCESS,
   GETPRODUCTFAILUER,
   SETSELECTEDPRODUCTINDEX,
+  LOGINSTARTED,
+  LOGINSUCCESS,
+  LOGINFAILUER,
 } from "./actionType";
 import axios from "axios";
 
 export const getProducts = (pageNo, pageSize, searchString) => {
   let reqURL = `https://mobile-tha-server-8ba57.firebaseapp.com/walmartproducts/${pageNo}/${pageSize}?`;
-  if(searchString){
-    reqURL = reqURL+`${searchString}`;
+  if (searchString) {
+    reqURL = reqURL + `${searchString}`;
   }
-  console.log("URL ",reqURL);
+  console.log("URL ", reqURL);
   return (dispatch) => {
     dispatch(getProductStarted(pageNo, pageSize, searchString));
     axios
-      .get(
-        reqURL,
-        {
-          title: "GetProducts",
-        }
-      )
+      .get(reqURL, {
+        title: "GetProducts",
+      })
       .then((res) => {
         dispatch(getProductSuccess(res));
       })
@@ -37,7 +37,7 @@ const getProductSuccess = (product) => ({
 
 const getProductStarted = (pageNo, pageSize, searchString) => ({
   type: GETPRODUCTS,
-  payload:{pageNo, pageSize, searchString}
+  payload: { pageNo, pageSize, searchString },
 });
 
 const getProductFailure = (error) => ({
@@ -48,4 +48,46 @@ const getProductFailure = (error) => ({
 export const setSelectedProductIndex = (index) => ({
   type: SETSELECTEDPRODUCTINDEX,
   payload: index,
+});
+
+export const onLogin = (userName, password) => {
+  let reqURL = `https://ie-cms-test.cfapps.eu10.hana.ondemand.com/api/login`;
+
+  return (dispatch) => {
+    dispatch(loginStarted(userName, password));
+    axios
+      .post(
+        reqURL,
+        {
+          password: password,
+          username: userName,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            // "Origin": "https://ie-cms-test.cfapps.eu10.hana.ondemand.com",
+            // "Referer": "https://ie-cms-test.cfapps.eu10.hana.ondemand.com/login",
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(loginSuccess(res));
+      })
+      .catch((err) => {
+        dispatch(loginFailuer(err.message));
+      });
+  };
+};
+const loginStarted = (userName, password) => ({
+  type: LOGINSTARTED,
+  payload: { userName, password },
+});
+const loginSuccess = (res) => ({
+  type: LOGINSUCCESS,
+  payload: res,
+});
+const loginFailuer = (res) => ({
+  type: LOGINFAILUER,
+  payload: res,
 });
