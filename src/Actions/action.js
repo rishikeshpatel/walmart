@@ -50,29 +50,32 @@ export const setSelectedProductIndex = (index) => ({
   payload: index,
 });
 
+export const isLoggedIn = (userName, password) => {
+  let meURL = `/api/me`;
+  return (dispatch) => {
+    axios
+      .get(meURL)
+      .then((res) => {
+        dispatch(loginSuccess(res));
+      })
+      .catch((err) => {
+        dispatch(loginFailuer(err.message));
+      });
+  };
+};
 export const onLogin = (userName, password) => {
-  let reqURL = `https://ie-cms-test.cfapps.eu10.hana.ondemand.com/api/login`;
-
+  let reqURL = `/api/login`;
+  let meURL = `/api/me`;
   return (dispatch) => {
     dispatch(loginStarted(userName, password));
     axios
-      .post(
-        reqURL,
-        {
-          password: password,
-          username: userName,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-            // "Origin": "https://ie-cms-test.cfapps.eu10.hana.ondemand.com",
-            // "Referer": "https://ie-cms-test.cfapps.eu10.hana.ondemand.com/login",
-          },
-        }
-      )
+      .post(reqURL, {
+        password: password,
+        username: userName,
+      })
       .then((res) => {
-        dispatch(loginSuccess(res));
+        dispatch(isLoggedIn())
+        // dispatch(loginSuccess(res));
       })
       .catch((err) => {
         dispatch(loginFailuer(err.message));

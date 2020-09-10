@@ -1,0 +1,119 @@
+/* --------------Login page -------------------*/
+.login-page-container {
+  /* display: contents; Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #f5f3f3
+}
+/* Modal Content */
+.login-details {
+  flex: 1 1 auto;
+  padding: 5vh 0 1rem;
+  overflow: auto;
+  
+}
+
+/* The Close Button */
+
+.loginBox {
+  background-color: #fff;
+  border: 1px solid #eee;
+  width: 20rem;
+  max-width: 100%;
+  margin: auto;
+  padding: 3rem 3rem 5rem;
+}
+.inputBox {
+  max-width: 35rem;
+  margin: 1.3rem 0;
+}
+.inputBox .input {
+  margin: 0;
+}
+.input {
+  width: 100%;
+  height: 2.4rem;
+  outline: none;
+  padding-left: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.073);
+  border-radius: 0.3rem;
+  transition: border-color 0.15s ease-in-out;
+  background-color: #fff;
+  color: #0f152e;
+  margin: 0;
+  text-align: left;
+  font-weight: 500;
+}
+.inputBox label {
+  margin: 0 0 0.2rem;
+  color: #878a98;
+  font-weight: 500;
+  word-break: break-all;
+}
+a,
+.link {
+  color: #004bff;
+  text-decoration: none;
+}
+button {
+  outline: 0;
+  border: 0;
+  padding: 0;
+  background-size: contain;
+  font-family: "Inter UI", Nunito, "Open Sans", Roboto, Arial, sans-serif;
+  background-color: transparent;
+}
+.loginBox .button {
+  float: right;
+  margin: 0 0.5rem 3rem;
+}
+.button {
+  height: 2.4rem;
+  color: #fff;
+  background: #004bff;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  margin: 0;
+  vertical-align: top;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.button:hover,
+.button:focus {
+  box-shadow: inset 0 0 0 100vmax rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+}
+.loginBox .flash-message {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.flash-message.flash-message-error {
+  background-color: #fc4444;
+  color: #fff;
+}
+.flash-message {
+  margin: 1em 0;
+  border-radius: 5px;
+  padding: 1.1em;
+  position: relative;
+}

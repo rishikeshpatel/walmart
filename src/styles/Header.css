@@ -1,0 +1,30 @@
+/* Header */
+
+.header {
+  flex: 0 0 5rem;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  z-index: 200;
+  width: 100%;
+}
+
+.header .appName,
+.header .appNameSecondary {
+  font-size: 1rem;
+  color: #0f152e;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 0 0 2rem;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}

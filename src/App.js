@@ -26,6 +26,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import DialogBox from "./components/DialogBox";
 import LoginPage from "./components/LoginPage";
+import Header from "./components/Header";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,7 @@ class App extends Component {
       pageNo: this.props.value.pageNo,
       pageSize: this.props.value.pageSize,
     });
+    
   }
 
   // To see the product details page
@@ -233,36 +235,38 @@ class App extends Component {
     } = this.state;
     return (
       <div className="App">
-        <AppBar position="fixed" className="app-bar">
-          <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit">
-              Product List
-            </Typography>
-            <div className="search-bar">
-              <InputBase
-                className="search-input-box"
-                placeholder="Search Products..."
-                inputProps={{ "aria-label": "search" }}
-                value={searchString}
-                onChange={this.handleSearchStringChange}
-                onKeyPress={this.enterPressed}
-              />
-              <div
-                style={{
-                  backgroundColor: "#ffc220",
-                  borderTopRightRadius: "17px",
-                  borderBottomRightRadius: "17px",
-                }}
-              >
-                <SearchIcon className="search-icon" onClick={this.onSearch} />
+        {false && (
+          <AppBar position="fixed" className="app-bar">
+            <Toolbar variant="dense">
+              <IconButton edge="start" color="inherit" aria-label="menu">
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit">
+                Product List
+              </Typography>
+              <div className="search-bar">
+                <InputBase
+                  className="search-input-box"
+                  placeholder="Search Products..."
+                  inputProps={{ "aria-label": "search" }}
+                  value={searchString}
+                  onChange={this.handleSearchStringChange}
+                  onKeyPress={this.enterPressed}
+                />
+                <div
+                  style={{
+                    backgroundColor: "#ffc220",
+                    borderTopRightRadius: "17px",
+                    borderBottomRightRadius: "17px",
+                  }}
+                >
+                  <SearchIcon className="search-icon" onClick={this.onSearch} />
+                </div>
               </div>
-            </div>
-          </Toolbar>
-        </AppBar>
-        {!dialogOpen && (
+            </Toolbar>
+          </AppBar>
+        )}
+        {false && (
           <div className="product-list-container">
             <Drawer className="filter-drawer" variant="permanent" anchor="left">
               <Divider />
@@ -400,7 +404,7 @@ class App extends Component {
             </div>
           </div>
         )}
-        {!value.loading && (
+        {false && !value.loading && (
           <div className="product-pagination-container">
             <Pagination
               className="product-pagination"
@@ -426,7 +430,8 @@ class App extends Component {
           </div>
         )}
         {/* {dialogOpen && <DialogBox open={dialogOpen} handleClose={this.onCloseDialog}/>} */}
-        {dialogOpen && <LoginPage handleClose={this.onCloseDialog} />}
+        {true && <Header />}
+        {true && <LoginPage handleClose={this.onCloseDialog} />}
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import { onLogin } from "../actions/action";
 import { connect } from "react-redux";
-
+import "../styles/LoginPage.css";
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -23,10 +23,25 @@ class LoginPage extends React.Component {
   };
   render() {
     return (
-      <div className="login-page-container">
+      <div className="login-page-container" style={{ height: "100%" }}>
         <div className="login-details">
           <div className="loginBox">
-            <div className="flashmessage-container"></div>
+            <div className="flashmessage-container">
+              {false && (
+                <div
+                  className="flash-message flash-message-error"
+                  data-qa="flash-message"
+                >
+                  <div
+                    className="flash-message-text"
+                    data-qa="flash-message-error"
+                  >
+                    There was an error during login, make sure provided
+                    credentials are valid.
+                  </div>
+                </div>
+              )}
+            </div>
             <h2>Login</h2>
             <form onSubmit={(e) => this.handleSubmit(e)}>
               <div className="inputBox">
