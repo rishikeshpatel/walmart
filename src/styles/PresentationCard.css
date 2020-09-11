@@ -1,0 +1,40 @@
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    /* -webkit-transition: height 1s ease;
+    -moz-transition: height 1s ease;
+    -o-transition: height 1s ease; */
+    transition: height 1s ease !important;
+    width: 20rem;
+    max-width: 25rem;
+    height: 20rem;
+    max-height: 25rem;
+    padding: 0px;
+    margin: 2rem;
+    background-color: white;
+    text-align: left;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    height: 23rem;
+    /* transition: height 1s ease !important; */
+    /* transition: height 3s ease-in;
+    -webkit-transition: 'height' 3s ease-in; */
+    /* transition: height 0.25s ease-in; */
+  }
+  
+  .details-container {
+    padding: 2px 16px;
+  }
+ 
+  .image-container {
+    position: relative;
+    text-align: center;
+    color: white;
+    width:100%
+  }
+  .bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+  }

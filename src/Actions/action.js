@@ -6,6 +6,7 @@ import {
   LOGINSTARTED,
   LOGINSUCCESS,
   LOGINFAILUER,
+  LOGOUTSTARTED
 } from "./actionType";
 import axios from "axios";
 
@@ -50,16 +51,17 @@ export const setSelectedProductIndex = (index) => ({
   payload: index,
 });
 
-export const isLoggedIn = (userName, password) => {
+export const isLoggedIn = (isInitialCheck) => {
   let meURL = `/api/me`;
   return (dispatch) => {
+    isInitialCheck && dispatch(loginStarted());
     axios
       .get(meURL)
       .then((res) => {
         dispatch(loginSuccess(res));
       })
       .catch((err) => {
-        dispatch(loginFailuer(err.message));
+        !isInitialCheck ? dispatch(loginFailuer(err.message)) : dispatch(loginFailuer(""));
       });
   };
 };
@@ -67,15 +69,28 @@ export const onLogin = (userName, password) => {
   let reqURL = `/api/login`;
   let meURL = `/api/me`;
   return (dispatch) => {
-    dispatch(loginStarted(userName, password));
+    // dispatch(loginStarted(userName, password));
     axios
       .post(reqURL, {
         password: password,
         username: userName,
       })
       .then((res) => {
-        dispatch(isLoggedIn())
-        // dispatch(loginSuccess(res));
+        dispatch(isLoggedIn(false))
+      })
+      .catch((err) => {
+        dispatch(loginFailuer(err.message));
+      });
+  };
+};
+export const onLogout = () => {
+  let reqURL = `/api/logout`;
+  return (dispatch) => {
+    dispatch(logoutStarted());
+    axios
+      .get(reqURL)
+      .then((res) => {
+        dispatch(isLoggedIn(true))
       })
       .catch((err) => {
         dispatch(loginFailuer(err.message));
@@ -93,4 +108,9 @@ const loginSuccess = (res) => ({
 const loginFailuer = (res) => ({
   type: LOGINFAILUER,
   payload: res,
+});
+
+const logoutStarted = () => ({
+  type: LOGOUTSTARTED,
+  payload: {},
 });

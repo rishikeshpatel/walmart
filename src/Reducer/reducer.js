@@ -6,6 +6,7 @@ const initialState = {
   pageSize: 8,
   pageNo: 1,
   searchString: "",
+  alreadyLoggedin: false
 };
 
 function productReducer(state = initialState, action) {
@@ -32,14 +33,17 @@ function productReducer(state = initialState, action) {
     case "SETINDEX":
       return { ...state, index: action.payload };
     case "LOGINSTARTED":
-      console.log("Started");
+      // console.log("Started");
+      return { ...state, loading: true };
+      case "LOGOUTSTARTED":
+      // console.log("Started");
       return { ...state, loading: true };
     case "LOGINSUCCESS":
-      console.log("Success", action.payload);
-      return{...state}
+      // console.log("Success", action.payload);
+      return{...state, loading: false, alreadyLoggedin:true,error:""}
     case "LOGINFAILUER":
-      console.log("Failuer", action.payload);
-      return{...state, error: action.payload}
+      // console.log("Failuer", action.payload);
+      return{...state, error: action.payload, loading: false,alreadyLoggedin:false}
     default:
       return state;
   }

@@ -1,0 +1,41 @@
+.omni-presentation-page-container {
+    /* position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: #f5f3f3;
+}
+
+/* Float four columns side by side */
+.presentation-column {
+    float: left;
+    /* width: 25%; */
+    padding: 0 10px;
+    height: 25rem;
+  }
+  
+  /* Remove extra left and right margins, due to padding */
+  .presentation-row {
+    width: 100%;
+    margin-left: 5rem;
+  }
+  
+  /* Clear floats after the columns */
+  .presentation-row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Responsive columns */
+  @media screen and (max-width: 600px) {
+    .presentation-column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }

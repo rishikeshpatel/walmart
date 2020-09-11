@@ -28,3 +28,9 @@
   text-overflow: ellipsis;
   cursor: pointer;
 }
+.link {
+  color: #004bff;
+  text-decoration: none;
+  padding: 1rem;
+  cursor: pointer;
+}

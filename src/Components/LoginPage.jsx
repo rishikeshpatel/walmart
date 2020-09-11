@@ -2,6 +2,7 @@ import React from "react";
 import { onLogin } from "../actions/action";
 import { connect } from "react-redux";
 import "../styles/LoginPage.css";
+
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -23,11 +24,11 @@ class LoginPage extends React.Component {
   };
   render() {
     return (
-      <div className="login-page-container" style={{ height: "100%" }}>
+      <div className="login-page-container">
         <div className="login-details">
           <div className="loginBox">
             <div className="flashmessage-container">
-              {false && (
+              {this.props.error && (
                 <div
                   className="flash-message flash-message-error"
                   data-qa="flash-message"
@@ -68,7 +69,7 @@ class LoginPage extends React.Component {
                 type="button"
                 className="link"
                 data-qa="forgot-password-link"
-                onClick={this.props.handleClose}
+                // onClick() to be used for on forget of password.
               >
                 Forgot password?
               </button>

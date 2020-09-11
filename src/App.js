@@ -3,7 +3,7 @@ import "./App.css";
 import Product from "./components/Product";
 import Productloading from "./components/Productloading";
 import EditProductDetails from "./components/EditProductDetails";
-import { getProducts, setSelectedProductIndex } from "./actions/action";
+import { getProducts, setSelectedProductIndex, isLoggedIn, onLogout } from "./actions/action";
 import { connect } from "react-redux";
 import {
   AppBar,
@@ -27,6 +27,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import DialogBox from "./components/DialogBox";
 import LoginPage from "./components/LoginPage";
 import Header from "./components/Header";
+import OmniPresentationPage from "./components/OmniPresentationPage";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -40,18 +41,26 @@ class App extends Component {
       minPrice: null,
       maxPrice: null,
       dialogOpen: false,
+      alreadyLoggedin: false,
     };
   }
   componentDidMount() {
-    const { getProducts, value } = this.props;
-    value.products.length === 0 && getProducts(1, 8);
+    const { getProducts, isLoggedIn, value } = this.props;
+    // value.products.length === 0 && getProducts(1, 8);
     this.setState({
-      pageNo: this.props.value.pageNo,
-      pageSize: this.props.value.pageSize,
+      pageNo: value.pageNo,
+      pageSize: value.pageSize,
+      isLoggedIn: value.isLoggedin
     });
-    
+    isLoggedIn(true)
   }
 
+  componentDidUpdate(prevStates, prevProps) {
+    console.log("Previous Props : ",prevStates)
+    console.log("Previous State : ",prevProps)
+    console.log("Current State : ",this.state)
+    console.log("Current Props : ",this.props)
+  }
   // To see the product details page
   onProductClick = (index) => {
     const { setSelectedProduct } = this.props;
@@ -430,8 +439,11 @@ class App extends Component {
           </div>
         )}
         {/* {dialogOpen && <DialogBox open={dialogOpen} handleClose={this.onCloseDialog}/>} */}
-        {true && <Header />}
-        {true && <LoginPage handleClose={this.onCloseDialog} />}
+        <Header onLogout={this.props.onLogout} isLoggedIn={value.alreadyLoggedin}/>
+        {value.loading && <div class="loader"></div>}
+        {!value.loading && value.alreadyLoggedin && <OmniPresentationPage />}
+        {!value.loading && !value.alreadyLoggedin && <LoginPage error={value.error} />}
+        
       </div>
     );
   }
@@ -444,6 +456,8 @@ const mapDispatchToProps = (dispatch) => ({
   getProducts: (pageNo, PageSize, searchString) =>
     dispatch(getProducts(pageNo, PageSize, searchString)),
   setSelectedProduct: (index) => dispatch(setSelectedProductIndex(index)),
+  isLoggedIn: (isInitialCheck) => dispatch(isLoggedIn(isInitialCheck)),
+  onLogout: () => dispatch(onLogout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
