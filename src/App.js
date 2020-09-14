@@ -3,7 +3,14 @@ import "./App.css";
 import Product from "./components/Product";
 import Productloading from "./components/Productloading";
 import EditProductDetails from "./components/EditProductDetails";
-import { getProducts, setSelectedProductIndex, isLoggedIn, onLogout } from "./actions/action";
+import {
+  getProducts,
+  setSelectedProductIndex,
+  isLoggedIn,
+  onLogout,
+  getPresentation,
+  getPresentationDetails,
+} from "./actions/action";
 import { connect } from "react-redux";
 import {
   AppBar,
@@ -42,6 +49,8 @@ class App extends Component {
       maxPrice: null,
       dialogOpen: false,
       alreadyLoggedin: false,
+      userData: {},
+      presentationData: [],
     };
   }
   componentDidMount() {
@@ -50,17 +59,34 @@ class App extends Component {
     this.setState({
       pageNo: value.pageNo,
       pageSize: value.pageSize,
-      isLoggedIn: value.isLoggedin
+      isLoggedIn: value.isLoggedin,
     });
-    isLoggedIn(true)
+    isLoggedIn(true);
   }
 
-  componentDidUpdate(prevStates, prevProps) {
-    console.log("Previous Props : ",prevStates)
-    console.log("Previous State : ",prevProps)
-    console.log("Current State : ",this.state)
-    console.log("Current Props : ",this.props)
+  componentDidUpdate(prevProps, prevStates) {
+    const { value } = this.props;
+    // console.log("Previous Props : ", prevProps);
+    // console.log("Current Props : ", value.presentationDetails);
+    if (prevProps.value.meData !== value.meData) {
+      this.setState({
+        userData: value.meData.data.data,
+      });
+    }
+    if (
+      prevProps.value.presentationData !== value.presentationData &&
+      value.presentationData.length > 0
+    ) {
+      this.setState({
+        presentationData: value.presentationData,
+      });
+      value.presentationData.forEach(this.getPresentationDetails);
+      // this.props.getPresentationDetails(value.presentationData);
+    }
   }
+  getPresentationDetails = (item, index) => {
+    this.props.getPresentationDetails(item.id);
+  };
   // To see the product details page
   onProductClick = (index) => {
     const { setSelectedProduct } = this.props;
@@ -241,6 +267,8 @@ class App extends Component {
       minPrice,
       maxPrice,
       dialogOpen,
+      userData,
+      presentationData,
     } = this.state;
     return (
       <div className="App">
@@ -439,11 +467,18 @@ class App extends Component {
           </div>
         )}
         {/* {dialogOpen && <DialogBox open={dialogOpen} handleClose={this.onCloseDialog}/>} */}
-        <Header onLogout={this.props.onLogout} isLoggedIn={value.alreadyLoggedin}/>
-        {value.loading && <div class="loader"></div>}
-        {!value.loading && value.alreadyLoggedin && <OmniPresentationPage />}
-        {!value.loading && !value.alreadyLoggedin && <LoginPage error={value.error} />}
-        
+        <Header
+          onLogout={this.props.onLogout}
+          isLoggedIn={value.alreadyLoggedin}
+          userData={userData}
+        />
+        {value.loading && <div className="loader"></div>}
+        {!value.loading && value.alreadyLoggedin && (
+          <OmniPresentationPage data={value.presentationDetails} />
+        )}
+        {!value.loading && !value.alreadyLoggedin && (
+          <LoginPage error={value.error} />
+        )}
       </div>
     );
   }
@@ -457,7 +492,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getProducts(pageNo, PageSize, searchString)),
   setSelectedProduct: (index) => dispatch(setSelectedProductIndex(index)),
   isLoggedIn: (isInitialCheck) => dispatch(isLoggedIn(isInitialCheck)),
-  onLogout: () => dispatch(onLogout())
+  onLogout: () => dispatch(onLogout()),
+  getPresentationDetails: (id) => dispatch(getPresentationDetails(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

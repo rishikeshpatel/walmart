@@ -6,7 +6,10 @@ const initialState = {
   pageSize: 8,
   pageNo: 1,
   searchString: "",
-  alreadyLoggedin: false
+  alreadyLoggedin: false,
+  meData: {},
+  presentationData: [],
+  presentationDetails: [],
 };
 
 function productReducer(state = initialState, action) {
@@ -33,17 +36,60 @@ function productReducer(state = initialState, action) {
     case "SETINDEX":
       return { ...state, index: action.payload };
     case "LOGINSTARTED":
-      // console.log("Started");
       return { ...state, loading: true };
-      case "LOGOUTSTARTED":
-      // console.log("Started");
-      return { ...state, loading: true };
+    case "LOGOUTSTARTED":
+      return { ...state, loading: true, alreadyLoggedin: false };
     case "LOGINSUCCESS":
-      // console.log("Success", action.payload);
-      return{...state, loading: false, alreadyLoggedin:true,error:""}
+      return {
+        ...state,
+        loading: false,
+        alreadyLoggedin: true,
+        error: "",
+        meData: action.payload,
+      };
     case "LOGINFAILUER":
-      // console.log("Failuer", action.payload);
-      return{...state, error: action.payload, loading: false,alreadyLoggedin:false}
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+        alreadyLoggedin: false,
+      };
+    case "GETPRESENTATIONSTARTED":
+      return {
+        ...state,
+        loading: true,
+      };
+    case "GETPRESENTATIONSUCCESS":
+      // console.log("Success", action.payload);
+      return {
+        ...state,
+        // loading: false,
+        presentationData: action.payload,
+      };
+    case "GETPRESENTATIONFAILUER":
+      // console.log("If unauthorised ; ",action.payload)
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        alreadyLoggedin: false,
+      };
+    case "GETPRESENTATIONDETAILSSUCCESS":
+      let tempPresentationDetails = state.presentationDetails;
+      let tempPresentationlenth = state.presentationData.length
+      tempPresentationDetails.push(action.payload.data.data)
+      // console.log("Sceans : ",action.payload.data.data);
+      return {
+        ...state,
+        presentationDetails: tempPresentationDetails,
+        loading: tempPresentationDetails.length === tempPresentationlenth ? false : true
+      };
+    case "GETPRESENTATIONDETAILSFAILUER":
+      console.log(action.payload);
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

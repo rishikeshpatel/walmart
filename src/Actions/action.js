@@ -6,7 +6,12 @@ import {
   LOGINSTARTED,
   LOGINSUCCESS,
   LOGINFAILUER,
-  LOGOUTSTARTED
+  LOGOUTSTARTED,
+  GETPRESENTATIONSTARTED,
+  GETPRESENTATIONSUCCESS,
+  GETPRESENTATIONFAILUER,
+  GETPRESENTATIONDETAILSSUCCESS,
+  GETPRESENTATIONDETAILSFAILUER
 } from "./actionType";
 import axios from "axios";
 
@@ -59,24 +64,25 @@ export const isLoggedIn = (isInitialCheck) => {
       .get(meURL)
       .then((res) => {
         dispatch(loginSuccess(res));
+        dispatch(getPresentation());
       })
       .catch((err) => {
-        !isInitialCheck ? dispatch(loginFailuer(err.message)) : dispatch(loginFailuer(""));
+        !isInitialCheck
+          ? dispatch(loginFailuer(err.message))
+          : dispatch(loginFailuer(""));
       });
   };
 };
 export const onLogin = (userName, password) => {
   let reqURL = `/api/login`;
-  let meURL = `/api/me`;
   return (dispatch) => {
-    // dispatch(loginStarted(userName, password));
     axios
       .post(reqURL, {
         password: password,
         username: userName,
       })
       .then((res) => {
-        dispatch(isLoggedIn(false))
+        dispatch(isLoggedIn(false));
       })
       .catch((err) => {
         dispatch(loginFailuer(err.message));
@@ -90,13 +96,65 @@ export const onLogout = () => {
     axios
       .get(reqURL)
       .then((res) => {
-        dispatch(isLoggedIn(true))
+        dispatch(isLoggedIn(true));
       })
       .catch((err) => {
         dispatch(loginFailuer(err.message));
       });
   };
 };
+
+export const getPresentation = () => {
+  let reqURL = `/api/presentations?startIndex=0&stopIndex=9&type=own`;
+  return (dispatch) => {
+    dispatch(getPresentationStarted());
+    axios
+      .get(reqURL)
+      .then((res) => {
+        dispatch(getPresentationSuccess(res));
+      })
+      .catch((err) => {
+        // console.log("Error : ",err)
+        dispatch(getPresentationFailuer(err.message));
+      });
+  };
+};
+export const getPresentationDetails = (id) => {
+  // let tempArr = [];
+  // id.forEach((item,index) => {
+  //   // tempArr.push(getDetails(item.id))
+  //   getDetails(item.id).then((result) => {
+  //     tempArr.push(result)
+  //     console.log(tempArr)
+  //   })
+  // });
+  // console.log(tempArr);
+  // return (dispatch) => {
+  //   dispatch(getPresentationDetailsSuccess(tempArr));
+  // }
+  let reqURL = `/api/presentations/${id}`;
+  return (dispatch) => {
+    // dispatch(getPresentationStarted());
+    axios
+      .get(reqURL)
+      .then((res) => {
+        dispatch(getPresentationDetailsSuccess(res));
+      })
+      .catch((err) => {
+        // console.log("Error : ",err)
+        dispatch(getPresentationDetailsFailuer(err.message));
+      });
+  };
+};
+// async function getDetails(id) {
+//   try {
+//     // fetch data from a url endpoint
+//     const data =  axios.get("/some_url_endpoint");
+//     return data;
+//   } catch (error) {
+//     alert(error); // catches both errors
+//   }
+// }
 const loginStarted = (userName, password) => ({
   type: LOGINSTARTED,
   payload: { userName, password },
@@ -114,3 +172,25 @@ const logoutStarted = () => ({
   type: LOGOUTSTARTED,
   payload: {},
 });
+const getPresentationStarted = () => ({
+  type: GETPRESENTATIONSTARTED,
+  payload: {},
+});
+const getPresentationSuccess = (res) => ({
+  type: GETPRESENTATIONSUCCESS,
+  payload: res.data.rows,
+});
+const getPresentationFailuer = (error) => ({
+  type: GETPRESENTATIONFAILUER,
+  payload: error,
+});
+const getPresentationDetailsSuccess = (res) => ({
+  type: GETPRESENTATIONDETAILSSUCCESS,
+  payload: res,
+});
+const getPresentationDetailsFailuer = (error) => ({
+  type: GETPRESENTATIONDETAILSFAILUER,
+  payload: error,
+});
+
+

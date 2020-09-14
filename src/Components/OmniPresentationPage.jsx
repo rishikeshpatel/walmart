@@ -3,33 +3,21 @@ import "../styles/OmniPresentationPage.css";
 import PresentationCard from "./PresentationCard";
 class OmniPresentationPage extends React.Component {
   render() {
+    const { data } = this.props;
     return (
       <div className="omni-presentation-page-container">
         <div className="presentation-row">
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
-          <div className="presentation-column">
-            <PresentationCard />
-          </div>
+          {data && data.map((param) => {
+              return (
+                <div className="presentation-column" key={param.id}>
+                  <PresentationCard
+                    presentationTitle={param.title}
+                    description={param.description}
+                    sceneCount={param.presentationScenes.length}
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
     );

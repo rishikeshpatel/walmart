@@ -7,14 +7,14 @@ function PresentationCard(props) {
     <div className="card" id="card">
       <div className="image-container">
         <img src={ppt} alt="Avatar" style={{ width: "100%" }} />
-        <div className="bottom-left">Presentation Title</div>
+        <div className="bottom-left">
+          <b>{props.presentationTitle}</b>
+        </div>
       </div>
 
       <div className="details-container">
-        <p>
-          No of Scenes
-        </p>
-        <p>Presentation Description...</p>
+        <p>No of Scenes <span className="badge">{props.sceneCount}</span></p>
+        <p>{props.description}</p>
       </div>
     </div>
   );
